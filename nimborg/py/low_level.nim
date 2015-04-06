@@ -61,18 +61,12 @@
 
 import 
   dynlib
-
-
-when defined(windows): 
-  # the new buffer protocol only exists since python 2.6
-  const dllname = "python(27|26).dll"
-elif defined(macosx):
-  const dllname = "libpython(2.7|2.6).dylib"
+ 
+when defined(override_python_settings):
+  import override_python_settings
 else: 
-  const dllver = ".1"
-  const dllname = "libpython(2.7|2.6).so" & dllver
+  import python_settings
 
-  
 const 
   PYT_METHOD_BUFFER_INCREASE* = 10
   PYT_MEMBER_BUFFER_INCREASE* = 10
@@ -962,308 +956,308 @@ var
   # Does not work!
   # Py_VaBuildValue: proc (format: PChar; va_list: array of const): PPyObject; cdecl;
   #PyBuiltin_Init: proc; cdecl;
-proc PyComplex_FromCComplex*(c: TPy_complex): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyComplex_FromDoubles*(realv, imag: float64): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyComplex_RealAsDouble*(op: PPyObject): float64{.cdecl, importc, dynlib: dllname.}
-proc PyComplex_ImagAsDouble*(op: PPyObject): float64{.cdecl, importc, dynlib: dllname.}
-proc PyComplex_AsCComplex*(op: PPyObject): TPy_complex{.cdecl, importc, dynlib: dllname.}
-proc PyCFunction_GetFunction*(ob: PPyObject): pointer{.cdecl, importc, dynlib: dllname.}
-proc PyCFunction_GetSelf*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyCallable_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.}
-proc PyCObject_FromVoidPtr*(cobj, destruct: pointer): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyCObject_AsVoidPtr*(ob: PPyObject): pointer{.cdecl, importc, dynlib: dllname.}
-proc PyClass_New*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyClass_IsSubclass*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.}
+proc PyComplex_FromCComplex*(c: TPy_complex): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyComplex_FromDoubles*(realv, imag: float64): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyComplex_RealAsDouble*(op: PPyObject): float64{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyComplex_ImagAsDouble*(op: PPyObject): float64{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyComplex_AsCComplex*(op: PPyObject): TPy_complex{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyCFunction_GetFunction*(ob: PPyObject): pointer{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyCFunction_GetSelf*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyCallable_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyCObject_FromVoidPtr*(cobj, destruct: pointer): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyCObject_AsVoidPtr*(ob: PPyObject): pointer{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyClass_New*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyClass_IsSubclass*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
 proc Py_InitModule4*(name: cstring, methods: PPyMethodDef, doc: cstring, 
                          passthrough: PPyObject, Api_Version: int): PPyObject{.
-      cdecl, importc, dynlib: dllname.}
-proc PyErr_BadArgument*(): int{.cdecl, importc, dynlib: dllname.}
-proc PyErr_BadInternalCall*(){.cdecl, importc, dynlib: dllname.}
-proc PyErr_CheckSignals*(): int{.cdecl, importc, dynlib: dllname.}
-proc PyErr_Clear*(){.cdecl, importc, dynlib: dllname.}
-proc PyErr_Fetch*(errtype, errvalue, errtraceback: PPPyObject){.cdecl, importc, dynlib: dllname.}
-proc PyErr_NoMemory*(): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyErr_Occurred*(): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyErr_Print*(){.cdecl, importc, dynlib: dllname.}
-proc PyErr_Restore*(errtype, errvalue, errtraceback: PPyObject){.cdecl, importc, dynlib: dllname.}
-proc PyErr_SetFromErrno*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyErr_SetNone*(value: PPyObject){.cdecl, importc, dynlib: dllname.}
-proc PyErr_SetObject*(ob1, ob2: PPyObject){.cdecl, importc, dynlib: dllname.}
-proc PyErr_SetString*(ErrorObject: PPyObject, text: cstring){.cdecl, importc, dynlib: dllname.}
-proc PyImport_GetModuleDict*(): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyInt_FromLong*(x: int32): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc Py_Initialize*(){.cdecl, importc, dynlib: dllname.}
-proc Py_Exit*(RetVal: int){.cdecl, importc, dynlib: dllname.}
-proc PyEval_GetBuiltins*(): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_GetItem*(mp, key: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_SetItem*(mp, key, item: PPyObject): int{.cdecl, importc, dynlib: dllname.}
-proc PyDict_DelItem*(mp, key: PPyObject): int{.cdecl, importc, dynlib: dllname.}
-proc PyDict_Clear*(mp: PPyObject){.cdecl, importc, dynlib: dllname.}
+      cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_BadArgument*(): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_BadInternalCall*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_CheckSignals*(): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_Clear*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_Fetch*(errtype, errvalue, errtraceback: PPPyObject){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_NoMemory*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_Occurred*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_Print*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_Restore*(errtype, errvalue, errtraceback: PPyObject){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_SetFromErrno*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_SetNone*(value: PPyObject){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_SetObject*(ob1, ob2: PPyObject){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyErr_SetString*(ErrorObject: PPyObject, text: cstring){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyImport_GetModuleDict*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyInt_FromLong*(x: int32): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_Initialize*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_Exit*(RetVal: int){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_GetBuiltins*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_GetItem*(mp, key: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_SetItem*(mp, key, item: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_DelItem*(mp, key: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_Clear*(mp: PPyObject){.cdecl, importc, dynlib: getPythonDllName().}
 proc PyDict_Next*(mp: PPyObject, pos: PInt, key, value: PPPyObject): int{.
-      cdecl, importc, dynlib: dllname.}
-proc PyDict_Keys*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_Values*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_Items*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_Size*(mp: PPyObject): int{.cdecl, importc, dynlib: dllname.}
-proc PyDict_DelItemString*(dp: PPyObject, key: cstring): int{.cdecl, importc, dynlib: dllname.}
-proc PyDict_New*(): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyDict_GetItemString*(dp: PPyObject, key: cstring): PPyObject{.cdecl, importc, dynlib: dllname.}
+      cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_Keys*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_Values*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_Items*(mp: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_Size*(mp: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_DelItemString*(dp: PPyObject, key: cstring): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_New*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyDict_GetItemString*(dp: PPyObject, key: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
 proc PyDict_SetItemString*(dp: PPyObject, key: cstring, item: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}
-proc PyDictProxy_New*(obj: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyModule_GetDict*(module: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyObject_Str*(v: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
+      cdecl, importc, dynlib: getPythonDllName().}
+proc PyDictProxy_New*(obj: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyModule_GetDict*(module: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyObject_Str*(v: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
 proc PyRun_String*(str: cstring, start: int, globals: PPyObject, 
-                       locals: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyRun_SimpleString*(str: cstring): int{.cdecl, importc, dynlib: dllname.}
-proc PyString_AsString*(ob: PPyObject): cstring{.cdecl, importc, dynlib: dllname.}
-proc PyString_FromString*(str: cstring): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PySys_SetArgv*(argc: int, argv: cstringArray){.cdecl, importc, dynlib: dllname.} 
+                       locals: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyRun_SimpleString*(str: cstring): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyString_AsString*(ob: PPyObject): cstring{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyString_FromString*(str: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PySys_SetArgv*(argc: int, argv: cstringArray){.cdecl, importc, dynlib: getPythonDllName().} 
   #+ means, Grzegorz or me has tested his non object version of this function
   #+
-proc PyCFunction_New*(md: PPyMethodDef, ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyEval_CallObject*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+proc PyCFunction_New*(md: PPyMethodDef, ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyEval_CallObject*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyEval_CallObjectWithKeywords*(ob1, ob2, ob3: PPyObject): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyEval_GetFrame*(): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_GetGlobals*(): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_GetLocals*(): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_GetOwner*(): PPyObject {.cdecl, importc, dynlib: dllname.}
-proc PyEval_GetRestricted*(): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_InitThreads*(){.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_RestoreThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.} #-
-proc PyEval_SaveThread*(): PPyThreadState{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_FromString*(pc1, pc2: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_GetLine*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_Name*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_SetBufSize*(ob: PPyObject, i: int){.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_SoftSpace*(ob: PPyObject, i: int): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_WriteObject*(ob1, ob2: PPyObject, i: int): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyFile_WriteString*(s: cstring, ob: PPyObject){.cdecl, importc, dynlib: dllname.} #+
-proc PyFloat_AsDouble*(ob: PPyObject): float64{.cdecl, importc, dynlib: dllname.} #+
-proc PyFloat_FromDouble*(db: float64): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFunction_GetCode*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFunction_GetGlobals*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyFunction_New*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyImport_AddModule*(name: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyImport_Cleanup*(){.cdecl, importc, dynlib: dllname.} #-
-proc PyImport_GetMagicNumber*(): int32{.cdecl, importc, dynlib: dllname.} #+
-proc PyImport_ImportFrozenModule*(key: cstring): int{.cdecl, importc, dynlib: dllname.} #+
-proc PyImport_ImportModule*(name: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyImport_Import*(name: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyEval_GetFrame*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_GetGlobals*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_GetLocals*(): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_GetOwner*(): PPyObject {.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_GetRestricted*(): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_InitThreads*(){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_RestoreThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyEval_SaveThread*(): PPyThreadState{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_FromString*(pc1, pc2: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_GetLine*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_Name*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_SetBufSize*(ob: PPyObject, i: int){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_SoftSpace*(ob: PPyObject, i: int): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_WriteObject*(ob1, ob2: PPyObject, i: int): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFile_WriteString*(s: cstring, ob: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyFloat_AsDouble*(ob: PPyObject): float64{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyFloat_FromDouble*(db: float64): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFunction_GetCode*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFunction_GetGlobals*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyFunction_New*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyImport_AddModule*(name: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyImport_Cleanup*(){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyImport_GetMagicNumber*(): int32{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyImport_ImportFrozenModule*(key: cstring): int{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyImport_ImportModule*(name: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyImport_Import*(name: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
                                                                
-proc PyImport_Init*() {.cdecl, importc, dynlib: dllname.}
-proc PyImport_ReloadModule*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyInstance_New*(obClass, obArg, obKW: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyInt_AsLong*(ob: PPyObject): int32{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_Append*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_AsTuple*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyList_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_Insert*(dp: PPyObject, idx: int, item: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_New*(size: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_Reverse*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_SetItem*(dp: PPyObject, idx: int, item: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+proc PyImport_Init*() {.cdecl, importc, dynlib: getPythonDllName().}
+proc PyImport_ReloadModule*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyInstance_New*(obClass, obArg, obKW: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyInt_AsLong*(ob: PPyObject): int32{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_Append*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_AsTuple*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyList_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_Insert*(dp: PPyObject, idx: int, item: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_New*(size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_Reverse*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_SetItem*(dp: PPyObject, idx: int, item: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyList_SetSlice*(ob: PPyObject, i1, i2: int, ob2: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}                 #+
-proc PyList_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyList_Sort*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyLong_AsDouble*(ob: PPyObject): float64{.cdecl, importc, dynlib: dllname.} #+
-proc PyLong_AsLong*(ob: PPyObject): int32{.cdecl, importc, dynlib: dllname.} #+
-proc PyLong_FromDouble*(db: float64): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyLong_FromLong*(L: int32): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #+
+proc PyList_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyList_Sort*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyLong_AsDouble*(ob: PPyObject): float64{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyLong_AsLong*(ob: PPyObject): int32{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyLong_FromDouble*(db: float64): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyLong_FromLong*(L: int32): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyLong_FromString*(pc: cstring, ppc: var cstring, i: int): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyLong_FromUnsignedLong*(val: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyLong_AsUnsignedLong*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyLong_FromUnicode*(ob: PPyObject, a, b: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyLong_FromLongLong*(val: int64): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyLong_AsLongLong*(ob: PPyObject): int64{.cdecl, importc, dynlib: dllname.} #-
-proc PyMapping_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyMapping_GetItemString*(ob: PPyObject, key: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyMapping_HasKey*(ob, key: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyMapping_HasKeyString*(ob: PPyObject, key: cstring): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyMapping_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyLong_FromUnsignedLong*(val: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyLong_AsUnsignedLong*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyLong_FromUnicode*(ob: PPyObject, a, b: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyLong_FromLongLong*(val: int64): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyLong_AsLongLong*(ob: PPyObject): int64{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMapping_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMapping_GetItemString*(ob: PPyObject, key: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMapping_HasKey*(ob, key: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMapping_HasKeyString*(ob: PPyObject, key: cstring): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMapping_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyMapping_SetItemString*(ob: PPyObject, key: cstring, value: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyMethod_Class*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyMethod_Function*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyMethod_New*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyMethod_Self*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyModule_GetName*(ob: PPyObject): cstring{.cdecl, importc, dynlib: dllname.} #-
-proc PyModule_New*(key: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Absolute*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Add*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_And*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Coerce*(ob1, ob2: var PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Divide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_FloorDivide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_TrueDivide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Divmod*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Float*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Int*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Invert*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Long*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Lshift*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Multiply*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Negative*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Or*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Positive*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Power*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Remainder*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Rshift*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Subtract*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyNumber_Xor*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyOS_InitInterrupts*(){.cdecl, importc, dynlib: dllname.} #-
-proc PyOS_InterruptOccurred*(): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_CallObject*(ob, args: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_Compare*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GetAttr*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyObject_GetAttrString*(ob: PPyObject, c: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GetItem*(ob, key: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_DelItem*(ob, key: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_HasAttrString*(ob: PPyObject, key: cstring): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_Hash*(ob: PPyObject): int32{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_IsTrue*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_Repr*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_SetAttr*(ob1, ob2, ob3: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyMethod_Class*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMethod_Function*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMethod_New*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyMethod_Self*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyModule_GetName*(ob: PPyObject): cstring{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyModule_New*(key: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Absolute*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Add*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_And*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Coerce*(ob1, ob2: var PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Divide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_FloorDivide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_TrueDivide*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Divmod*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Float*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Int*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Invert*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Long*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Lshift*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Multiply*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Negative*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Or*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Positive*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Power*(ob1, ob2, ob3: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Remainder*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Rshift*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Subtract*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNumber_Xor*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyOS_InitInterrupts*(){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyOS_InterruptOccurred*(): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_CallObject*(ob, args: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_Compare*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GetAttr*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyObject_GetAttrString*(ob: PPyObject, c: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GetItem*(ob, key: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_DelItem*(ob, key: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_HasAttrString*(ob: PPyObject, key: cstring): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_Hash*(ob: PPyObject): int32{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_IsTrue*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_Repr*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_SetAttr*(ob1, ob2, ob3: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyObject_SetAttrString*(ob: PPyObject, key: cstring, value: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyObject_SetItem*(ob1, ob2, ob3: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_Init*(ob: PPyObject, t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyObject_SetItem*(ob1, ob2, ob3: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_Init*(ob: PPyObject, t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyObject_InitVar*(ob: PPyObject, t: PPyTypeObject, size: int): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyObject_New*(t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_NewVar*(t: PPyTypeObject, size: int): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyObject_Free*(ob: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_IsInstance*(inst, cls: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_IsSubclass*(derived, cls: PPyObject): int{.cdecl, importc, dynlib: dllname.}
-proc PyObject_GenericGetAttr*(obj, name: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyObject_GenericSetAttr*(obj, name, value: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_RichCompare*(o1, o2: PPyObject, opid: TRichComparisonOpcode): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyObject_New*(t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_NewVar*(t: PPyTypeObject, size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyObject_Free*(ob: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_IsInstance*(inst, cls: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_IsSubclass*(derived, cls: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyObject_GenericGetAttr*(obj, name: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyObject_GenericSetAttr*(obj, name, value: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_RichCompare*(o1, o2: PPyObject, opid: TRichComparisonOpcode): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
 
-proc PyObject_GetBuffer*(obj: PPyObject, view: PPy_buffer, flags: cint): cint{.cdecl, importc, dynlib: dllname.} 
-proc PyBuffer_Release*(view: PPy_buffer) {.cdecl, importc, dynlib: dllname.} #-
+proc PyObject_GetBuffer*(obj: PPyObject, view: PPy_buffer, flags: cint): cint{.cdecl, importc, dynlib: getPythonDllName().} 
+proc PyBuffer_Release*(view: PPy_buffer) {.cdecl, importc, dynlib: getPythonDllName().} #-
 
-proc PyObject_GC_Malloc*(size: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_New*(t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_NewVar*(t: PPyTypeObject, size: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_Resize*(t: PPyObject, newsize: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_Del*(ob: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_Track*(ob: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyObject_GC_UnTrack*(ob: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyRange_New*(l1, l2, l3: int32, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Concat*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Count*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_In*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Index*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Repeat*(ob: PPyObject, count: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
+proc PyObject_GC_Malloc*(size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_New*(t: PPyTypeObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_NewVar*(t: PPyTypeObject, size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_Resize*(t: PPyObject, newsize: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_Del*(ob: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_Track*(ob: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyObject_GC_UnTrack*(ob: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyRange_New*(l1, l2, l3: int32, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Check*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Concat*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Count*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_In*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Index*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Length*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Repeat*(ob: PPyObject, count: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PySequence_SetItem*(ob: PPyObject, i: int, value: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
 proc PySequence_SetSlice*(ob: PPyObject, i1, i2: int, value: PPyObject): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PySequence_DelSlice*(ob: PPyObject, i1, i2: int): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Tuple*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PySequence_Contains*(ob, value: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PySequence_DelSlice*(ob: PPyObject, i1, i2: int): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Tuple*(ob: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySequence_Contains*(ob, value: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PySlice_GetIndices*(ob: PPySliceObject, len: int, 
-                             start, stop, step: var int): int{.cdecl, importc, dynlib: dllname.} #-
+                             start, stop, step: var int): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PySlice_GetIndicesEx*(ob: PPySliceObject, len: int, 
                                start, stop, step, slicelength: var int): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PySlice_New*(start, stop, step: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyString_Concat*(ob1: var PPyObject, ob2: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyString_ConcatAndDel*(ob1: var PPyObject, ob2: PPyObject){.cdecl, importc, dynlib: dllname.} #-
-proc PyString_Format*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyString_FromStringAndSize*(s: cstring, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyString_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PySlice_New*(start, stop, step: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyString_Concat*(ob1: var PPyObject, ob2: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyString_ConcatAndDel*(ob1: var PPyObject, ob2: PPyObject){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyString_Format*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyString_FromStringAndSize*(s: cstring, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyString_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyString_DecodeEscape*(s: cstring, length: int, errors: cstring, 
                                 unicode: int, recode_encoding: cstring): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyString_Repr*(ob: PPyObject, smartquotes: int): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PySys_GetObject*(s: cstring): PPyObject{.cdecl, importc, dynlib: dllname.} 
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyString_Repr*(ob: PPyObject, smartquotes: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PySys_GetObject*(s: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} 
 #-
-#PySys_Init:procedure; cdecl, importc, dynlib: dllname;
+#PySys_Init:procedure; cdecl, importc, dynlib: getPythonDllName();
 #-
-proc PySys_SetObject*(s: cstring, ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PySys_SetPath*(path: cstring){.cdecl, importc, dynlib: dllname.} #-
-#PyTraceBack_Fetch:function:PPyObject; cdecl, importc, dynlib: dllname;
+proc PySys_SetObject*(s: cstring, ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PySys_SetPath*(path: cstring){.cdecl, importc, dynlib: getPythonDllName().} #-
+#PyTraceBack_Fetch:function:PPyObject; cdecl, importc, dynlib: getPythonDllName();
 #-
-proc PyTraceBack_Here*(p: pointer): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyTraceBack_Print*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-#PyTraceBack_Store:function (ob:PPyObject):integer; cdecl, importc, dynlib: dllname;
+proc PyTraceBack_Here*(p: pointer): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyTraceBack_Print*(ob1, ob2: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+#PyTraceBack_Store:function (ob:PPyObject):integer; cdecl, importc, dynlib: getPythonDllName();
 #+
-proc PyTuple_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc PyTuple_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyTuple_New*(size: int): PPyObject{.cdecl, importc, dynlib: dllname.} #+
-proc PyTuple_SetItem*(ob: PPyObject, key: int, value: PPyObject): int{.cdecl, importc, dynlib: dllname.} #+
-proc PyTuple_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: dllname.} #+
-proc PyType_IsSubtype*(a, b: PPyTypeObject): int{.cdecl, importc, dynlib: dllname.}
+proc PyTuple_GetItem*(ob: PPyObject, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyTuple_GetSlice*(ob: PPyObject, i1, i2: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyTuple_New*(size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyTuple_SetItem*(ob: PPyObject, key: int, value: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyTuple_Size*(ob: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyType_IsSubtype*(a, b: PPyTypeObject): int{.cdecl, importc, dynlib: getPythonDllName().}
 proc PyType_GenericAlloc*(atype: PPyTypeObject, nitems: int): PPyObject{.
-      cdecl, importc, dynlib: dllname.}
+      cdecl, importc, dynlib: getPythonDllName().}
 proc PyType_GenericNew*(atype: PPyTypeObject, args, kwds: PPyObject): PPyObject{.
-      cdecl, importc, dynlib: dllname.}
-proc PyType_Ready*(atype: PPyTypeObject): int{.cdecl, importc, dynlib: dllname.} #+
-proc PyUnicode_FromWideChar*(w: pointer, size: int): PPyObject{.cdecl, importc, dynlib: dllname.} #+
+      cdecl, importc, dynlib: getPythonDllName().}
+proc PyType_Ready*(atype: PPyTypeObject): int{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc PyUnicode_FromWideChar*(w: pointer, size: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #+
 proc PyUnicode_AsWideChar*(unicode: PPyObject, w: pointer, size: int): int{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc PyUnicode_FromOrdinal*(ordinal: int): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyWeakref_GetObject*(theRef: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyWeakref_NewProxy*(ob, callback: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyWeakref_NewRef*(ob, callback: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyWrapper_New*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc PyBool_FromLong*(ok: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc Py_AtExit*(prc: proc () {.cdecl.}): int{.cdecl, importc, dynlib: dllname.} #-
-#Py_Cleanup:procedure; cdecl, importc, dynlib: dllname;
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc PyUnicode_FromOrdinal*(ordinal: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyWeakref_GetObject*(theRef: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyWeakref_NewProxy*(ob, callback: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyWeakref_NewRef*(ob, callback: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyWrapper_New*(ob1, ob2: PPyObject): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyBool_FromLong*(ok: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc Py_AtExit*(prc: proc () {.cdecl.}): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+#Py_Cleanup:procedure; cdecl, importc, dynlib: getPythonDllName();
 #-
-proc Py_CompileString*(s1, s2: cstring, i: int): PPyObject{.cdecl, importc, dynlib: dllname.} #-
-proc Py_FatalError*(s: cstring){.cdecl, importc, dynlib: dllname.} #-
+proc Py_CompileString*(s1, s2: cstring, i: int): PPyObject{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc Py_FatalError*(s: cstring){.cdecl, importc, dynlib: getPythonDllName().} #-
 proc Py_FindMethod*(md: PPyMethodDef, ob: PPyObject, key: cstring): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
 proc Py_FindMethodInChain*(mc: PPyMethodChain, ob: PPyObject, key: cstring): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc Py_FlushLine*(){.cdecl, importc, dynlib: dllname.} #+
-proc Py_Finalize*(){.cdecl, importc, dynlib: dllname.} #-
-proc PyErr_ExceptionMatches*(exc: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
-proc PyErr_GivenExceptionMatches*(raised_exc, exc: PPyObject): int{.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc Py_FlushLine*(){.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_Finalize*(){.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyErr_ExceptionMatches*(exc: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyErr_GivenExceptionMatches*(raised_exc, exc: PPyObject): int{.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyEval_EvalCode*(co: PPyCodeObject, globals, locals: PPyObject): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #+
-proc Py_GetVersion*(): cstring{.cdecl, importc, dynlib: dllname.} #+
-proc Py_GetCopyright*(): cstring{.cdecl, importc, dynlib: dllname.} #+
-proc Py_GetExecPrefix*(): cstring{.cdecl, importc, dynlib: dllname.} #+
-proc Py_GetPath*(): cstring{.cdecl, importc, dynlib: dllname.} #+
-proc Py_GetPrefix*(): cstring{.cdecl, importc, dynlib: dllname.} #+
-proc Py_GetProgramName*(): cstring{.cdecl, importc, dynlib: dllname.} #-
-proc PyParser_SimpleParseString*(str: cstring, start: int): PNode{.cdecl, importc, dynlib: dllname.} #-
-proc PyNode_Free*(n: PNode){.cdecl, importc, dynlib: dllname.} #-
+      cdecl, importc, dynlib: getPythonDllName().}                 #+
+proc Py_GetVersion*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_GetCopyright*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_GetExecPrefix*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_GetPath*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_GetPrefix*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #+
+proc Py_GetProgramName*(): cstring{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyParser_SimpleParseString*(str: cstring, start: int): PNode{.cdecl, importc, dynlib: getPythonDllName().} #-
+proc PyNode_Free*(n: PNode){.cdecl, importc, dynlib: getPythonDllName().} #-
 proc PyErr_NewException*(name: cstring, base, dict: PPyObject): PPyObject{.
-      cdecl, importc, dynlib: dllname.}                 #-
-proc Py_Malloc*(size: int): pointer {.cdecl, importc, dynlib: dllname.}
-proc PyMem_Malloc*(size: int): pointer {.cdecl, importc, dynlib: dllname.}
+      cdecl, importc, dynlib: getPythonDllName().}                 #-
+proc Py_Malloc*(size: int): pointer {.cdecl, importc, dynlib: getPythonDllName().}
+proc PyMem_Malloc*(size: int): pointer {.cdecl, importc, dynlib: getPythonDllName().}
 proc PyObject_CallMethod*(obj: PPyObject, theMethod, 
-                              format: cstring): PPyObject{.cdecl, importc, dynlib: dllname.}
-proc Py_SetProgramName*(name: cstring){.cdecl, importc, dynlib: dllname.}
-proc Py_IsInitialized*(): int{.cdecl, importc, dynlib: dllname.}
-proc Py_GetProgramFullPath*(): cstring{.cdecl, importc, dynlib: dllname.}
-proc Py_NewInterpreter*(): PPyThreadState{.cdecl, importc, dynlib: dllname.}
-proc Py_EndInterpreter*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.}
-proc PyEval_AcquireLock*(){.cdecl, importc, dynlib: dllname.}
-proc PyEval_ReleaseLock*(){.cdecl, importc, dynlib: dllname.}
-proc PyEval_AcquireThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.}
-proc PyEval_ReleaseThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.}
-proc PyInterpreterState_New*(): PPyInterpreterState{.cdecl, importc, dynlib: dllname.}
-proc PyInterpreterState_Clear*(interp: PPyInterpreterState){.cdecl, importc, dynlib: dllname.}
-proc PyInterpreterState_Delete*(interp: PPyInterpreterState){.cdecl, importc, dynlib: dllname.}
-proc PyThreadState_New*(interp: PPyInterpreterState): PPyThreadState{.cdecl, importc, dynlib: dllname.}
-proc PyThreadState_Clear*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.}
-proc PyThreadState_Delete*(tstate: PPyThreadState){.cdecl, importc, dynlib: dllname.}
-proc PyThreadState_Get*(): PPyThreadState{.cdecl, importc, dynlib: dllname.}
-proc PyThreadState_Swap*(tstate: PPyThreadState): PPyThreadState{.cdecl, importc, dynlib: dllname.} 
+                              format: cstring): PPyObject{.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_SetProgramName*(name: cstring){.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_IsInitialized*(): int{.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_GetProgramFullPath*(): cstring{.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_NewInterpreter*(): PPyThreadState{.cdecl, importc, dynlib: getPythonDllName().}
+proc Py_EndInterpreter*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_AcquireLock*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_ReleaseLock*(){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_AcquireThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyEval_ReleaseThread*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyInterpreterState_New*(): PPyInterpreterState{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyInterpreterState_Clear*(interp: PPyInterpreterState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyInterpreterState_Delete*(interp: PPyInterpreterState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyThreadState_New*(interp: PPyInterpreterState): PPyThreadState{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyThreadState_Clear*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyThreadState_Delete*(tstate: PPyThreadState){.cdecl, importc, dynlib: getPythonDllName().}
+proc PyThreadState_Get*(): PPyThreadState{.cdecl, importc, dynlib: getPythonDllName().}
+proc PyThreadState_Swap*(tstate: PPyThreadState): PPyThreadState{.cdecl, importc, dynlib: getPythonDllName().} 
 
 #Further exported Objects, may be implemented later
 #
@@ -1654,10 +1648,16 @@ proc initPython*() =
     raise newException(LibraryError, 
                        "no suitable version of the python dll was found")
   initLibVars(lib)
+
   Py_Initialize()
+
+  let initialPath = getInitialPythonPath()
+  if initialPath != nil:
+    PySys_SetPath(initialPath)
+
 
 proc finalizePython*() =
   if lib != nil:
     Py_Finalize()
     unloadLib(lib)
-    finally: lib = nil
+    defer: lib = nil
