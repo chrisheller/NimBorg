@@ -12,6 +12,7 @@
 
 import low_level except expr, stmt
 import macros
+import sequtils
 from strutils import `%`
 
 type
